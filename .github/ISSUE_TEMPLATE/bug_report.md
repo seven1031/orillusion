@@ -23,15 +23,21 @@ A clear and concise description of what you expected to happen
 If applicable, add screenshots to help explain your problem
 
 ## Orillusion engine version
-State the version you use for developement, e.g. 0.5.0
+State the version you use for developement, e.g. 0.6.1
 
-## Desktop (please complete the following information)
+## Platform (please complete the following information)
 - OS: [e.g. win, mac, android]
-- Browser [e.g. chrome]
-- Version [e.g. 113]
+- Browser: [e.g. chrome]
+- Version: [e.g. 113]
+
+## Device Info.
+- CPU: e.g. Intel I7 13700, Apple M2
+- Graphics Card: e.g, Intel UHD 670, Apple M2, GTX 3070
 
 ## Code demo link
-If applicabla, please provide a sandbox/codepen/code snippet... to demonstrate the bug
+If applicabla, please provide a sandbox/codepen/code snippet... to demonstrate the bug.  
+You can update https://codepen.io/pen?template=QWQrRmr to create a demo
+
 
 ## Additional context
 Add any other context about the problem here

@@ -1,5 +1,3 @@
-import { isEqual, isMatch } from 'https://unpkg.com/underscore@1.13.6/underscore-esm-min.js'
-
 let target = sessionStorage.target.split('/').pop()
 let result: { [key: string]: any } = {}
 let totalS = 0, totalF = 0
@@ -18,7 +16,8 @@ async function test(unit: string, run: () => Promise<any>) {
             new Promise((_, _rej) => {
                 rej = (e: any) => _rej(e.reason)
                 window.addEventListener('unhandledrejection', rej, { once: true })
-            })
+            }),
+            new Promise((_, _rej) => setTimeout(_rej, 30 * 1000, new Error('timeout')))
         ])
         result[unit].success++
         totalS++
@@ -63,6 +62,18 @@ class Compare {
         }
     }
     // TODO
+    toSubequal(obj: any, threshold: any = 0.00001) {
+        let min = obj - threshold;
+        let max = obj + threshold;
+        if (this.src < min || this.src > max) {
+            throw new Error('not subequal')
+        }
+    }
+    toRange(min: any, max: any) {
+        if (this.src < min || this.src > max) {
+            throw new Error('out of range')
+        }
+    }
 }
 function expect(object: any) {
     return new Compare(object)
@@ -86,4 +97,29 @@ function delay(time?: number) {
         setTimeout(res, time || 200)
     })
 }
+
+// no funcion types
+function isEqual(a: any, b: any) {
+    if (a === b) return a !== 0 || 1 / a === 1 / b;
+    if (a == null || b == null) return false;
+    if (a !== a) return b !== b;
+    if(typeof a === 'function' || typeof b === 'function')
+        return false;
+    if (typeof a !== 'object' || typeof b != 'object') 
+        return false;
+    // for other objects just compare stringify results
+    return JSON.stringify(a) === JSON.stringify(b)
+}
+
+function isMatch(object: any, attrs: { [key: string]: any }) {
+    const _keys = Object.keys(attrs), length = _keys.length;
+    if (object == null) return !length;
+    const obj = Object(object);
+    for (let i = 0; i < length; i++) {
+        const key = _keys[i];
+        if (attrs[key] !== obj[key] || !(key in obj)) return false;
+    }
+    return true;
+}
+
 export { test, expect, end, delay }
